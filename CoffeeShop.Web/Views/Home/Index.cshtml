@@ -1,0 +1,140 @@
+﻿@section scripts {
+    @Scripts.Render("~/bundles/app")
+}
+
+<div class="page-header">
+    @*<h1>Offices</h1>*@
+</div>
+
+<div class="row">
+
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">Offices</h2>
+            </div>
+            <div class="panel-body">
+                <ul class="list-unstyled" data-bind="foreach: offices">
+                    <li>
+                        <strong><span data-bind="text: OfficeName"></span></strong>: <span data-bind="text: PantryName"></span>
+                        <!-- ko if: HasProduct -->
+                        <small><a href="#" data-bind="click: $parent.getOfficeDetail">Details</a></small>
+                        <!-- /ko -->
+                        <!-- ko ifnot: HasProduct -->
+                        <small><a href="#" data-bind="click: addProduct">Add Product</a></small>
+                        <!-- /ko -->
+                    </li>
+                </ul>
+                <form class="form-horizontal" data-bind="submit: createProduct">
+                    <div>
+                        <table data-bind='visible: product().length > 0'>
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Unit</th>
+                                    <th />
+                                </tr>
+                            </thead>
+                            <tbody data-bind='foreach: product'>
+                                <tr>
+                                    <td><input class='form-control' data-bind='value: ProductName, uniqueName: true' required /></td>
+                                    <td><input class='form-control' data-bind='value: Unit, uniqueName: true' required /></td>
+                                    <td><a href='#' data-bind='click: removeProduct'>Delete</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button data-bind='enable: product().length > 0' type='submit' class="btn btn-default">Submit</button>
+                </form>
+
+            </div>
+        </div>
+        <div class="alert alert-danger" data-bind="visible: error"><p data-bind="text: error"></p></div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">Add Office</h2>
+            </div>
+
+            <div class="panel-body">
+                <form class="form-horizontal" data-bind="submit: addOffice">
+                    <div class="form-group" data-bind="with: newOffice">
+                        <label for="inputOfficeName" class="col-sm-2 control-label">Office</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputOfficeName" data-bind="value:OfficeName" required/>
+                        </div>
+
+                        <label for="inputPantryName" class="col-sm-2 control-label">Pantry</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputPantryName" data-bind="value:PantryName" required/>
+                        </div>
+                    </div>
+                    <button type='submit' class="btn btn-default">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ko if:details() -->
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">Product</h2>
+            </div>
+            <div class="panel-body">
+                <ul class="list-unstyled" data-bind="foreach: details">
+                    <li>
+                        <strong><span data-bind="text: ProductName"></span></strong> : <span data-bind="text: Unit"></span> : <span data-bind="text: OfficeID"></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">Product Chart</h2>
+            </div>
+            <div class="panel-body">
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <!-- /ko -->
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">Choose Coffee</h2>
+            </div>
+            <div class="panel-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-sm-10">
+                            <select class="breadcrumb" data-bind="options:offices, optionsText: 'OfficeName', value: newProduct.Office"></select>
+                        </div>
+                    </div>
+                    <div class="form-group" data-bind="with: newProduct">
+                        <div class="col-sm-10">
+                            Customer Name :  <input  type="text" class="form-control" id="inputClientName"  data-bind="value:ClientName" required/>
+                        </div>
+                    </div>
+                    <br />
+                    <button type="submit" class="btn btn-primary" style="height:70px; width:130px" data-bind="click: updateProducts.bind($data, 'Double Americano')">Double Americano</button>
+                    <button type="submit" class="btn btn-primary" style="height:70px; width:90px" data-bind="click: updateProducts.bind($data, 'Sweet Latte')">Sweet Latte</button>
+                    <button type="submit" class="btn btn-primary" style="height:70px; width:90px" data-bind="click: updateProducts.bind($data, 'Flat White')">Flat White</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">Order Chart</h2>
+            </div>
+            <div class="panel-body">
+                <canvas id="myOrderChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
